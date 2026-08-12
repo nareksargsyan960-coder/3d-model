@@ -217,15 +217,19 @@ function renderFooterMeta() {
 /* -------------------------------------------------------------------------- */
 
 let lenis = null;
+let motionEnabled = true;
 
 function initScroll(config) {
-  const reduce = prefersReducedMotion();
-  const hasGsap = typeof window.gsap !== 'undefined';
+  // `motion: false` variants opt out of every moving effect: no smooth scroll,
+  // no scroll reveals, no counting numbers, no slider. Static by design.
+  const still = !config.motion;
+  const reduce = prefersReducedMotion() || still;
+  const hasGsap = !still && typeof window.gsap !== 'undefined';
   const hasST = hasGsap && typeof window.ScrollTrigger !== 'undefined';
 
   if (hasST) window.gsap.registerPlugin(window.ScrollTrigger);
 
-  if (config.lenis && typeof window.Lenis !== 'undefined' && !reduce) {
+  if (config.motion && config.lenis && typeof window.Lenis !== 'undefined' && !reduce) {
     lenis = new window.Lenis({ duration: 1.05, smoothWheel: true, touchMultiplier: 1.6 });
     if (hasGsap) {
       lenis.on('scroll', () => { if (hasST) window.ScrollTrigger.update(); });
@@ -306,8 +310,9 @@ function initNav() {
       e.preventDefault();
       closeDrawer();
       const offset = -((header?.offsetHeight ?? 0) + 12);
+      const top = target.getBoundingClientRect().top + window.scrollY + offset;
       if (lenis) lenis.scrollTo(target, { offset });
-      else window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY + offset, behavior: 'smooth' });
+      else window.scrollTo({ top, behavior: motionEnabled ? 'smooth' : 'auto' });
       history.replaceState(null, '', id);
     });
   });
@@ -659,7 +664,7 @@ function initForm() {
 }
 
 function initTestimonials(config) {
-  if (!config.swiper || typeof window.Swiper === 'undefined') return;
+  if (!config.motion || !config.swiper || typeof window.Swiper === 'undefined') return;
   const el = $('.tm-swiper');
   if (!el) return;
   new window.Swiper(el, {
@@ -774,9 +779,10 @@ export function showViewerFallback() {
 
 export function mountSite(options = {}) {
   const config = Object.assign(
-    { lenis: true, swiper: true, tilt: false, lightbox: true },
+    { motion: true, lenis: true, swiper: true, tilt: false, lightbox: true },
     options
   );
+  motionEnabled = config.motion;
 
   renderNav();
   renderStats();

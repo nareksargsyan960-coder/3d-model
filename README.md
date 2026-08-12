@@ -1,7 +1,7 @@
 # CADORO — Jewelry CAD Studio website
 
-Three complete design directions for a jewellery 3D-modelling studio. Same content, same
-interactions, three visual languages — built so you can compare them fairly and keep one.
+Six complete design directions for a jewellery 3D-modelling studio. Same content, same
+interactions, six visual languages — built so you can compare them fairly and keep one.
 
 Static HTML/CSS/JS. **No backend, no build step, no npm install.** Libraries load from CDN.
 
@@ -16,13 +16,31 @@ cd 3d-project
 python3 -m http.server 8080
 ```
 
-Then open **http://localhost:8080** — the landing page links to all three variants.
+Then open **http://localhost:8080** — the landing page links to all six variants.
+
+**With motion** — smooth scrolling, scroll reveals, testimonial slider, slowly turning 3D piece:
 
 | | Variant | Direction |
 |---|---|---|
 | 01 | [`v1-dark-luxury/`](v1-dark-luxury/) | Black + gold. Low light, serif display, glow. The classic fine-jewellery register. |
 | 02 | [`v2-light-gallery/`](v2-light-gallery/) | White + champagne. Museum walls, editorial grid. Ships with a light/dark toggle. |
 | 03 | [`v3-industrial-tech/`](v3-industrial-tech/) | Navy + steel. Blueprint grid, monospace readouts, wireframe-first 3D. |
+
+**Without motion** — identical content and the same interactive 3D, but nothing animates:
+
+| | Variant | Direction |
+|---|---|---|
+| 04 | [`v4-swiss-editorial/`](v4-swiss-editorial/) | Black + white + one red. Strict grid, hairline rules, mono numerals, no shadows. |
+| 05 | [`v5-corporate-clean/`](v5-corporate-clean/) | Blue + neutral. Rounded cards, plain language — aimed at workshops and casting houses. |
+| 06 | [`v6-bold-contrast/`](v6-bold-contrast/) | Black + yellow. Archivo Black headlines, 2px hard borders, poster scale. |
+
+### What "without motion" means
+
+Variants 04–06 call `mountSite({ motion: false })`, which turns off scroll reveals, Lenis smooth
+scroll, the animated counters and the testimonial slider (rendered as a static grid instead).
+They load **no GSAP, no Lenis, no Swiper and no tilt library** at all — only Lucide icons and
+`three`. The 3D viewer is still fully interactive; it just does not auto-spin, so the piece only
+moves when a visitor drags it. Hover states change colour instantly, with no transitions.
 
 ---
 
@@ -63,12 +81,15 @@ zone · Lenis smooth scroll · GSAP scroll reveals.
 │   ├── site-data.js            ← ALL copy, portfolio, pricing, FAQ live here
 │   ├── site-ui.js              markup renderers + all behaviour
 │   └── jewelry-3d.js           three.js scene factory
-├── v1-dark-luxury/    index.html · css/style.css · js/main.js
-├── v2-light-gallery/  index.html · css/style.css · js/main.js
-└── v3-industrial-tech/index.html · css/style.css · js/main.js
+├── v1-dark-luxury/     index.html · css/style.css · js/main.js
+├── v2-light-gallery/   index.html · css/style.css · js/main.js
+├── v3-industrial-tech/ index.html · css/style.css · js/main.js
+├── v4-swiss-editorial/ index.html · css/style.css · js/main.js   (no motion)
+├── v5-corporate-clean/ index.html · css/style.css · js/main.js   (no motion)
+└── v6-bold-contrast/   index.html · css/style.css · js/main.js   (no motion)
 ```
 
-The three variants share `shared/`. Their `js/main.js` is a thin config file (~40 lines); the
+All six variants share `shared/`. Their `js/main.js` is a thin config file (20–60 lines); the
 design lives almost entirely in `css/style.css`.
 
 ---

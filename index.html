@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#111114">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@0;1&family=Archivo:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital@0;1&family=Archivo:wght@600;700&family=Archivo+Black&family=Manrope:wght@700;800&family=Space+Grotesk:wght@500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>%F0%9F%92%8E</text></svg>">
 <style>
   *,*::before,*::after{box-sizing:border-box}
@@ -78,6 +78,30 @@
   .pv-3 .pv-title em{font-style:normal;color:#4da3ff}
   .pv-3 .pv-sub{font-family:'JetBrains Mono',monospace;color:#4da3ff;letter-spacing:.1em}
 
+  .pv-4{background:#fff;color:#0f0f0f}
+  .pv-4 .pv-title{font-family:Inter,sans-serif;font-weight:500;letter-spacing:-.04em}
+  .pv-4 .pv-title em{font-style:normal;color:#e5231b}
+  .pv-4 .pv-sub{font-family:'IBM Plex Mono',monospace;color:#e5231b;letter-spacing:.04em}
+  .pv-4 .swatch{border-color:rgba(0,0,0,.18)}
+
+  .pv-5{background:#f5f8fc;color:#101828}
+  .pv-5 .pv-title{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.035em}
+  .pv-5 .pv-title em{font-style:normal;color:#1a5fd0}
+  .pv-5 .pv-sub{font-family:Manrope,sans-serif;font-weight:700;color:#1a5fd0;letter-spacing:.09em}
+  .pv-5 .swatch{border-color:rgba(0,0,0,.14);border-radius:6px}
+
+  .pv-6{background:#0b0b0b;color:#fff}
+  .pv-6 .pv-title{font-family:'Archivo Black',sans-serif;text-transform:uppercase;letter-spacing:-.04em;font-size:1.5rem;line-height:.95}
+  .pv-6 .pv-title em{font-style:normal;color:#ffd400}
+  .pv-6 .pv-sub{font-family:'Archivo Black',sans-serif;background:#ffd400;color:#0b0b0b;padding:.25rem .5rem;align-self:start;letter-spacing:.04em}
+
+  .group-head{
+    display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;
+    padding-bottom:.9rem;margin-bottom:1.25rem;border-bottom:1px solid var(--line)
+  }
+  .group-head h2{font-size:1.05rem;font-weight:600}
+  .group-head p{color:var(--text-3);font-size:.85rem}
+
   .card-body{padding:1.5rem 1.6rem;display:grid;gap:.75rem;align-content:start}
   .card-name{font-size:1.15rem;font-weight:500}
   .card-name span{color:var(--text-3);font-weight:400;font-size:.85rem}
@@ -101,8 +125,9 @@
   }
   .note h2{font-size:1rem;font-weight:600;margin-bottom:1rem}
   .note ul{display:grid;gap:.6rem;color:var(--text-2);font-size:.9rem;line-height:1.65}
-  .note li{display:grid;grid-template-columns:auto 1fr;gap:.7rem}
-  .note li::before{content:'→';color:var(--text-3)}
+  /* keep inline <code> flowing with the text — a grid here would break it out */
+  .note li{position:relative;padding-left:1.5rem}
+  .note li::before{content:'→';position:absolute;left:0;top:0;color:var(--text-3)}
   .note code{
     font-family:'JetBrains Mono',monospace;font-size:.83em;
     background:rgba(255,255,255,.06);padding:.1em .4em;color:#e5c86a
@@ -118,16 +143,21 @@
 <header>
   <div class="shell">
     <span class="kicker">CADORO · Jewelry CAD Studio · design study</span>
-    <h1>Three finished directions. <em>Pick one.</em></h1>
+    <h1>Six finished directions. <em>Pick one.</em></h1>
     <p class="lede">
       Each link below is a complete, working website — same copy, same portfolio, same live 3D
       viewer, same interactions. Only the visual language changes, so the comparison is honest.
-      Open all three, then keep the folder you like and delete the other two.
+      Open them, then keep the folder you like and delete the rest.
     </p>
   </div>
 </header>
 
 <main class="shell">
+  <div class="group-head">
+    <h2>With motion</h2>
+    <p>Smooth scrolling, scroll reveals, a testimonial slider and a slowly turning 3D piece.</p>
+  </div>
+
   <div class="cards">
 
     <article class="card">
@@ -207,10 +237,95 @@
 
   </div>
 
+  <div class="group-head">
+    <h2>Without motion</h2>
+    <p>Same content and the same interactive 3D — but nothing moves. No scroll reveals, no smooth
+       scrolling, no sliders, no auto-spin. Lighter, faster and calmer.</p>
+  </div>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="preview pv-4">
+        <span class="pv-sub">Swiss Editorial</span>
+        <div class="pv-title">From a sketch to <em>cast-ready</em>.</div>
+        <div class="swatches">
+          <span class="swatch" style="background:#ffffff"></span>
+          <span class="swatch" style="background:#f4f4f2"></span>
+          <span class="swatch" style="background:#e5231b"></span>
+          <span class="swatch" style="background:#56565a"></span>
+          <span class="swatch" style="background:#0f0f0f"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-name">04 — Swiss Editorial <span>black + white + red</span></h2>
+        <p class="card-text">
+          Strict grid, one typeface, one accent colour. Hairline rules instead of cards, mono
+          numerals, no shadows. The most typographic and the most restrained of the six.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Inter + IBM Plex Mono</span><span class="tag">No motion</span><span class="tag">Hairline grid</span>
+        </div>
+      </div>
+      <a class="card-cta" href="v4-swiss-editorial/index.html">Open variant 04 <span>→</span></a>
+    </article>
+
+    <article class="card">
+      <div class="preview pv-5">
+        <span class="pv-sub">Corporate Clean</span>
+        <div class="pv-title">From a sketch to <em>cast-ready</em>.</div>
+        <div class="swatches">
+          <span class="swatch" style="background:#ffffff"></span>
+          <span class="swatch" style="background:#e6eefb"></span>
+          <span class="swatch" style="background:#1a5fd0"></span>
+          <span class="swatch" style="background:#4b5768"></span>
+          <span class="swatch" style="background:#101828"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-name">05 — Corporate Clean <span>blue + neutral</span></h2>
+        <p class="card-text">
+          Written for the buyer, not the browser: rounded cards, calm blue, plain language, clear
+          pricing. The safest choice if your clients are workshops and casting houses.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Manrope + Public Sans</span><span class="tag">No motion</span><span class="tag">Soft cards</span>
+        </div>
+      </div>
+      <a class="card-cta" href="v5-corporate-clean/index.html">Open variant 05 <span>→</span></a>
+    </article>
+
+    <article class="card">
+      <div class="preview pv-6">
+        <span class="pv-sub">Bold Contrast</span>
+        <div class="pv-title">Sketch to <em>cast-ready</em></div>
+        <div class="swatches">
+          <span class="swatch" style="background:#0b0b0b"></span>
+          <span class="swatch" style="background:#171717"></span>
+          <span class="swatch" style="background:#ffd400"></span>
+          <span class="swatch" style="background:#b8b8b8"></span>
+          <span class="swatch" style="background:#ffffff"></span>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2 class="card-name">06 — High Contrast Bold <span>black + yellow</span></h2>
+        <p class="card-text">
+          Huge Archivo Black headlines, 2px hard borders, one loud yellow. Impossible to confuse
+          with anyone else — the choice if you want to be remembered rather than trusted.
+        </p>
+        <div class="card-tags">
+          <span class="tag">Archivo Black + Space Grotesk</span><span class="tag">No motion</span><span class="tag">Poster scale</span>
+        </div>
+      </div>
+      <a class="card-cta" href="v6-bold-contrast/index.html">Open variant 06 <span>→</span></a>
+    </article>
+
+  </div>
+
   <section class="note">
     <h2>What is shared, and what to change</h2>
     <ul>
-      <li>All copy, portfolio entries, pricing and FAQ live once in <code>shared/site-data.js</code> — edit there and all three update.</li>
+      <li>All copy, portfolio entries, pricing and FAQ live once in <code>shared/site-data.js</code> — edit there and all six update.</li>
       <li>The 3D viewer is <code>shared/jewelry-3d.js</code>: every ring, signet and pendant is generated in code, so there are no model files to host.</li>
       <li>The contact form is a working UI with validation and a drag-and-drop zone, but it is <strong>not wired to a backend</strong> — nothing is transmitted.</li>
       <li>Company name, figures, photographs and contact details are placeholders. See <code>README.md</code> for the replacement checklist.</li>
