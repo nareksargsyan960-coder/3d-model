@@ -157,12 +157,16 @@ h1, h2, h3, p, figure, blockquote { margin: 0; }
 @keyframes preloader-bail { to { opacity: 0; visibility: hidden; } }
 .preloader.is-done { opacity: 0; visibility: hidden; }
 .preloader-mark { display: grid; justify-items: center; gap: 1rem; color: var(--gold); }
-.preloader-mark svg { width: 46px; height: 46px; animation: spin 2.4s linear infinite; }
+.preloader-mark img {
+  width: 108px; height: 108px; object-fit: contain;
+  box-shadow: 0 0 44px rgba(212, 175, 55, 0.18);
+  animation: preloader-pulse 2.4s var(--ease) infinite;
+}
 .preloader-mark span {
   font-size: 0.72rem; letter-spacing: 0.42em; text-transform: uppercase;
   color: var(--text-3);
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes preloader-pulse { 50% { transform: scale(1.04); filter: brightness(1.15); } }
 
 /* ── header ────────────────────────────────────────────────────────────── */
 
@@ -178,17 +182,25 @@ h1, h2, h3, p, figure, blockquote { margin: 0; }
 }
 .header-inner {
   height: var(--header-h);
-  display: flex; align-items: center; gap: 2rem;
+  display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem);
 }
 
 .logo { display: inline-flex; align-items: center; gap: 0.7rem; color: var(--gold); }
-.logo-mark { width: 28px; height: 28px; flex: none; }
+.logo-mark {
+  width: 48px; height: 48px; flex: none; object-fit: contain;
+  border: 1px solid rgba(212, 175, 55, 0.38);
+}
 .logo-text {
-  font-family: var(--serif); font-size: 1.35rem; font-weight: 600;
-  letter-spacing: 0.24em; color: var(--text);
+  display: grid;
+  font-family: var(--serif); font-size: 1.28rem; font-weight: 600;
+  line-height: 1; letter-spacing: 0.12em; color: var(--text);
+}
+.logo-text small {
+  margin-top: 0.32rem; font-family: var(--sans); font-size: 0.46rem; font-weight: 400;
+  line-height: 1.2; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-3);
 }
 
-.nav { display: flex; gap: 2rem; margin-left: auto; }
+.nav { display: flex; gap: clamp(1rem, 1.7vw, 2rem); margin-left: auto; }
 .nav-link {
   position: relative;
   font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;

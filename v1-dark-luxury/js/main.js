@@ -2,10 +2,11 @@
 
 import { mountSite, bindViewerControls, showViewerFallback } from '../../shared/site-ui.js';
 import { createJewelryViewer, isWebGLAvailable } from '../../shared/jewelry-3d.js';
+import * as russianData from './site-data-ru.js';
 
 const GOLD = 0xd4af37;
 
-mountSite({ lenis: true, swiper: true, lightbox: true, tilt: true });
+mountSite({ data: russianData, lenis: true, swiper: true, lightbox: true, tilt: true });
 
 if (isWebGLAvailable()) {
   const hero = createJewelryViewer(document.getElementById('hero-canvas'), {

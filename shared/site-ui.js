@@ -6,7 +6,9 @@
  * comparison: same content, same interactions, different visual language.
  */
 
-import * as D from './site-data.js';
+import * as DefaultData from './site-data.js';
+
+let D = DefaultData;
 
 /* -------------------------------------------------------------------------- */
 /* Utilities                                                                   */
@@ -22,6 +24,7 @@ const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const icon = (name) => `<i data-lucide="${esc(name)}" aria-hidden="true"></i>`;
+const ui = (key, fallback) => D.UI?.[key] ?? fallback;
 
 function paint(key, html) {
   const host = document.querySelector(`[data-render="${key}"]`);
@@ -77,7 +80,7 @@ function renderPortfolio() {
   paint('portfolio', D.PORTFOLIO.map((p, i) => `
     <button type="button" class="pf-item" data-cat="${esc(p.cat)}" data-id="${esc(p.id)}"
             data-reveal style="--d:${(i % 4) * 60}ms"
-            aria-label="Open case study: ${esc(p.title)}">
+            aria-label="${esc(ui('openCaseStudy', 'Open case study'))}: ${esc(p.title)}">
       <span class="pf-media">
         <img class="pf-img" src="${esc(p.img)}" alt="${esc(p.title)} — ${esc(p.metal)}" loading="lazy" decoding="async">
         <span class="pf-mesh" aria-hidden="true"></span>
@@ -136,17 +139,17 @@ function renderTestimonials() {
 function renderPricing() {
   paint('pricing', D.PRICING.map((p, i) => `
     <article class="price-card${p.featured ? ' price-card--featured' : ''}" data-reveal style="--d:${i * 70}ms">
-      ${p.featured ? '<span class="price-flag">Most ordered</span>' : ''}
+      ${p.featured ? `<span class="price-flag">${esc(ui('mostOrdered', 'Most ordered'))}</span>` : ''}
       <h3 class="price-name">${esc(p.name)}</h3>
       <p class="price-blurb">${esc(p.blurb)}</p>
-      <div class="price-value"><span class="price-from">from</span>
+      <div class="price-value"><span class="price-from">${esc(ui('from', 'from'))}</span>
         <span class="price-num">${D.ESTIMATOR.symbol}${p.price}</span>
         <span class="price-unit">${esc(p.unit)}</span>
       </div>
       <ul class="price-list">
         ${p.features.map((f) => `<li>${icon('check')}<span>${esc(f)}</span></li>`).join('')}
       </ul>
-      <a class="btn ${p.featured ? 'btn--primary' : 'btn--ghost'} price-cta" href="#contact">Start with ${esc(p.name)}</a>
+      <a class="btn ${p.featured ? 'btn--primary' : 'btn--ghost'} price-cta" href="#contact">${esc(ui('startWith', 'Start with'))} ${esc(p.name)}</a>
     </article>`).join(''));
 }
 
@@ -169,33 +172,33 @@ function renderEstimator() {
   paint('estimator', `
     <div class="est-controls">
       <label class="field">
-        <span class="field-label">What are we modelling?</span>
+        <span class="field-label">${esc(ui('estimatorWhat', 'What are we modelling?'))}</span>
         <select class="field-input" id="est-type">${opts(D.ESTIMATOR.types)}</select>
       </label>
       <label class="field">
-        <span class="field-label">Level of detail</span>
+        <span class="field-label">${esc(ui('estimatorDetail', 'Level of detail'))}</span>
         <select class="field-input" id="est-complexity">${opts(D.ESTIMATOR.complexity)}</select>
       </label>
       <label class="field">
-        <span class="field-label">Turnaround</span>
+        <span class="field-label">${esc(ui('estimatorTurnaround', 'Turnaround'))}</span>
         <select class="field-input" id="est-turnaround">${opts(D.ESTIMATOR.turnaround)}</select>
       </label>
       <label class="field field--range">
-        <span class="field-label">Stones to set <output id="est-stones-out">0</output></span>
+        <span class="field-label">${esc(ui('estimatorStones', 'Stones to set'))} <output id="est-stones-out">0</output></span>
         <input class="field-range" type="range" id="est-stones" min="0" max="${D.ESTIMATOR.stone.max}" step="1" value="0">
       </label>
     </div>
     <div class="est-result" aria-live="polite">
       <div class="est-row">
-        <span class="est-key">Estimated range</span>
+        <span class="est-key">${esc(ui('estimatedRange', 'Estimated range'))}</span>
         <span class="est-val" id="est-price">—</span>
       </div>
       <div class="est-row">
-        <span class="est-key">Working days</span>
+        <span class="est-key">${esc(ui('workingDays', 'Working days'))}</span>
         <span class="est-val" id="est-days">—</span>
       </div>
-      <p class="est-note">Indicative only — a written quote follows your brief. Complex pavé fields and articulated pieces are priced individually.</p>
-      <button type="button" class="btn btn--primary est-send" id="est-send">${icon('arrow-right')}<span>Send this brief to the studio</span></button>
+      <p class="est-note">${esc(ui('estimatorNote', 'Indicative only — a written quote follows your brief. Complex pavé fields and articulated pieces are priced individually.'))}</p>
+      <button type="button" class="btn btn--primary est-send" id="est-send">${icon('arrow-right')}<span>${esc(ui('estimatorSend', 'Send this brief to the studio'))}</span></button>
     </div>`);
 }
 
@@ -371,11 +374,11 @@ function createLightbox() {
   el.hidden = true;
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-modal', 'true');
-  el.setAttribute('aria-label', 'Case study');
+  el.setAttribute('aria-label', ui('caseStudy', 'Case study'));
   el.innerHTML = `
     <div class="lb-backdrop" data-lb-close></div>
     <div class="lb-panel">
-      <button class="lb-nav lb-prev" type="button" aria-label="Previous piece">${icon('chevron-left')}</button>
+      <button class="lb-nav lb-prev" type="button" aria-label="${esc(ui('previousPiece', 'Previous piece'))}">${icon('chevron-left')}</button>
       <figure class="lb-figure">
         <img class="lb-img" alt="">
         <figcaption class="lb-cap">
@@ -386,8 +389,8 @@ function createLightbox() {
           <p class="lb-formats"></p>
         </figcaption>
       </figure>
-      <button class="lb-nav lb-next" type="button" aria-label="Next piece">${icon('chevron-right')}</button>
-      <button class="lb-close" type="button" data-lb-close aria-label="Close">${icon('x')}</button>
+      <button class="lb-nav lb-next" type="button" aria-label="${esc(ui('nextPiece', 'Next piece'))}">${icon('chevron-right')}</button>
+      <button class="lb-close" type="button" data-lb-close aria-label="${esc(ui('close', 'Close'))}">${icon('x')}</button>
     </div>`;
   document.body.appendChild(el);
 
@@ -409,7 +412,7 @@ function createLightbox() {
     parts.title.textContent = p.title;
     parts.meta.textContent = `${p.metal} · ${p.stones}`;
     parts.note.textContent = p.note;
-    parts.formats.textContent = `Delivered as ${p.formats}`;
+    parts.formats.textContent = `${ui('deliveredAs', 'Delivered as')} ${p.formats}`;
     parts.count.textContent = `${index + 1} / ${list.length}`;
   };
 
@@ -541,7 +544,18 @@ function initEstimator() {
       turnaround: turnaround.value,
     });
     priceEl.textContent = `${D.ESTIMATOR.symbol}${last.low.toLocaleString()} – ${D.ESTIMATOR.symbol}${last.high.toLocaleString()}`;
-    daysEl.textContent = `${last.days} working day${last.days === 1 ? '' : 's'}`;
+    if (D.UI) {
+      const mod10 = last.days % 10;
+      const mod100 = last.days % 100;
+      const dayWord = mod10 === 1 && mod100 !== 11
+        ? ui('dayOne', 'working day')
+        : mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)
+          ? ui('daysFew', 'working days')
+          : ui('daysMany', 'working days');
+      daysEl.textContent = `${last.days} ${dayWord}`;
+    } else {
+      daysEl.textContent = `${last.days} working day${last.days === 1 ? '' : 's'}`;
+    }
   };
 
   [type, complexity, turnaround].forEach((el) => el.addEventListener('change', update));
@@ -553,9 +567,9 @@ function initEstimator() {
     const contact = document.querySelector('#contact');
     if (message && last) {
       message.value =
-        `Estimator brief: ${last.label}.\n` +
-        `Indicative range ${D.ESTIMATOR.symbol}${last.low}–${D.ESTIMATOR.symbol}${last.high}, ` +
-        `about ${last.days} working days.\n\nProject details: `;
+        `${ui('estimatorBrief', 'Estimator brief')}: ${last.label}.\n` +
+        `${ui('indicativeRange', 'Indicative range')} ${D.ESTIMATOR.symbol}${last.low}–${D.ESTIMATOR.symbol}${last.high}, ` +
+        `${ui('aboutDays', 'about')} ${last.days} ${ui('daysMany', 'working days')}.\n\n${ui('projectDetails', 'Project details')}: `;
       message.dispatchEvent(new Event('input'));
     }
     if (contact) {
@@ -586,9 +600,9 @@ function initForm() {
   };
 
   const validators = {
-    'f-name': (v) => (v.trim().length >= 2 ? '' : 'Please tell us your name.'),
-    'f-email': (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : 'A valid email address is required for the quote.'),
-    'f-message': (v) => (v.trim().length >= 12 ? '' : 'A sentence or two about the piece helps us quote accurately.'),
+    'f-name': (v) => (v.trim().length >= 2 ? '' : ui('nameError', 'Please tell us your name.')),
+    'f-email': (v) => (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) ? '' : ui('emailError', 'A valid email address is required for the quote.')),
+    'f-message': (v) => (v.trim().length >= 12 ? '' : ui('messageError', 'A sentence or two about the piece helps us quote accurately.')),
   };
 
   const validateField = (field) => setError(field, validators[field.id]?.(field.value) ?? '');
@@ -638,7 +652,7 @@ function initForm() {
 
     if (!ok) {
       status.className = 'form-status is-error';
-      status.textContent = 'Please correct the highlighted fields.';
+      status.textContent = ui('correctFields', 'Please correct the highlighted fields.');
       fields.find((f) => f.getAttribute('aria-invalid') === 'true')?.focus();
       return;
     }
@@ -646,7 +660,7 @@ function initForm() {
     submit.disabled = true;
     submit.classList.add('is-loading');
     status.className = 'form-status is-pending';
-    status.textContent = 'Sending…';
+    status.textContent = ui('sending', 'Sending…');
 
     // Demo only: there is no backend, so we simulate the round trip.
     setTimeout(() => {
@@ -655,9 +669,8 @@ function initForm() {
       form.classList.add('is-sent');
       status.className = 'form-status is-ok';
       status.innerHTML =
-        '<strong>Thank you — your brief looks good.</strong> ' +
-        'This demo form is not connected to a backend yet, so nothing was actually sent. ' +
-        'Wiring it to Formspree, EmailJS or your own endpoint takes one line of configuration.';
+        `<strong>${esc(ui('thanks', 'Thank you — your brief looks good.'))}</strong> ` +
+        esc(ui('demoNotSent', 'This demo form is not connected to a backend yet, so nothing was actually sent. Wiring it to Formspree, EmailJS or your own endpoint takes one line of configuration.'));
       status.focus?.();
     }, 900);
   });
@@ -778,6 +791,7 @@ export function showViewerFallback() {
 /* -------------------------------------------------------------------------- */
 
 export function mountSite(options = {}) {
+  D = options.data ?? DefaultData;
   const config = Object.assign(
     { motion: true, lenis: true, swiper: true, tilt: false, lightbox: true },
     options
