@@ -704,13 +704,19 @@ function initPreloader() {
   const pre = $('.preloader');
   if (!pre) return;
   const done = () => {
+    if (pre.classList.contains('is-done')) return;
     pre.classList.add('is-done');
-    setTimeout(() => pre.remove(), 700);
+    setTimeout(() => pre.remove(), 600);
   };
-  if (document.readyState === 'complete') setTimeout(done, 350);
-  else window.addEventListener('load', () => setTimeout(done, 350));
-  // Never let a slow CDN keep the page hidden.
-  setTimeout(done, 4000);
+  if (document.readyState !== 'loading') {
+    requestAnimationFrame(() => setTimeout(done, 120));
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      requestAnimationFrame(() => setTimeout(done, 120));
+    });
+  }
+  // Safety timeout
+  setTimeout(done, 1500);
 }
 
 /** FAQ rich-result markup, generated so the copy only lives in site-data.js. */

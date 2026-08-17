@@ -1795,9 +1795,11 @@ textarea.field-input {
   }
   .lb-prev {
     left: 0.5rem;
+    top: 40%;
   }
   .lb-next {
     right: 0.5rem;
+    top: 40%;
   }
   .lb-close {
     top: -52px;
