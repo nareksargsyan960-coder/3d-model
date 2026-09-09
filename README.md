@@ -20,19 +20,19 @@ Then open **http://localhost:8080** — the landing page links to all six varian
 
 **With motion** — smooth scrolling, scroll reveals, testimonial slider, slowly turning 3D piece:
 
-| | Variant | Direction |
-|---|---|---|
-| 01 | [`v1-dark-luxury/`](v1-dark-luxury/) | Black + gold. Low light, serif display, glow. The classic fine-jewellery register. |
-| 02 | [`v2-light-gallery/`](v2-light-gallery/) | White + champagne. Museum walls, editorial grid. Ships with a light/dark toggle. |
-| 03 | [`v3-industrial-tech/`](v3-industrial-tech/) | Navy + steel. Blueprint grid, monospace readouts, wireframe-first 3D. |
+|     | Variant                                      | Direction                                                                          |
+| --- | -------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 01  | [`v1-dark-luxury/`](v1-dark-luxury/)         | Black + gold. Low light, serif display, glow. The classic fine-jewellery register. |
+| 02  | [`v2-light-gallery/`](v2-light-gallery/)     | White + champagne. Museum walls, editorial grid. Ships with a light/dark toggle.   |
+| 03  | [`v3-industrial-tech/`](v3-industrial-tech/) | Navy + steel. Blueprint grid, monospace readouts, wireframe-first 3D.              |
 
 **Without motion** — identical content and the same interactive 3D, but nothing animates:
 
-| | Variant | Direction |
-|---|---|---|
-| 04 | [`v4-swiss-editorial/`](v4-swiss-editorial/) | Black + white + one red. Strict grid, hairline rules, mono numerals, no shadows. |
-| 05 | [`v5-corporate-clean/`](v5-corporate-clean/) | Blue + neutral. Rounded cards, plain language — aimed at workshops and casting houses. |
-| 06 | [`v6-bold-contrast/`](v6-bold-contrast/) | Black + yellow. Archivo Black headlines, 2px hard borders, poster scale. |
+|     | Variant                                      | Direction                                                                              |
+| --- | -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 04  | [`v4-swiss-editorial/`](v4-swiss-editorial/) | Black + white + one red. Strict grid, hairline rules, mono numerals, no shadows.       |
+| 05  | [`v5-corporate-clean/`](v5-corporate-clean/) | Blue + neutral. Rounded cards, plain language — aimed at workshops and casting houses. |
+| 06  | [`v6-bold-contrast/`](v6-bold-contrast/)     | Black + yellow. Archivo Black headlines, 2px hard borders, poster scale.               |
 
 ### What "without motion" means
 
@@ -121,9 +121,9 @@ plainly that nothing was sent. To make it real, open `shared/site-ui.js`, find t
 `setTimeout` inside `initForm()`, and replace it with a POST — e.g. Formspree:
 
 ```js
-const res = await fetch('https://formspree.io/f/YOUR_ID', {
-  method: 'POST',
-  headers: { Accept: 'application/json' },
+const res = await fetch("https://formspree.io/f/YOUR_ID", {
+  method: "POST",
+  headers: { Accept: "application/json" },
   body: new FormData(form),
 });
 ```

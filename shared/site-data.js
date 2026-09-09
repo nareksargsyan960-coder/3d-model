@@ -126,9 +126,9 @@ export const LIFESTYLE = {
 };
 
 export const CAPABILITIES = [
-  { title: 'Software', items: ['Rhino 8 + Grasshopper', 'MatrixGold', 'ZBrush', 'Blender', 'KeyShot 12'] },
+  { title: 'Software', items: ['Rhino + Grasshopper', 'MatrixGold', 'ZBrush', 'Blender', 'KeyShot 12'] },
   { title: 'Delivery formats', items: ['STL — printing & casting', '3DM — editable NURBS', 'STEP / IGES — solids & CNC', 'OBJ — rendering & review', '3MF — modern print queues'] },
-  { title: 'Checked before delivery', items: ['Watertight, manifold mesh', 'Min. wall thickness 0.8 mm', 'Prong seats & girdle clearance', 'Comfort-fit inner profile', 'Weight estimate per metal'] },
+  { title: 'Checked before delivery', items: ['Watertight, manifold mesh', 'Min. wall thickness 0.6 mm', 'Prong seats & girdle clearance', 'Comfort-fit inner profile', 'Weight estimate per metal'] },
 ];
 
 export const WHY = [
@@ -145,85 +145,16 @@ export const TESTIMONIALS = [
   { quote: 'Renders good enough to sell from. We listed six pieces on pre-order using their turntables before a single one had been cast.', name: 'Chris Laurent', role: 'Creative Director, Maison Laurent', place: 'Antwerp, Belgium' },
 ];
 
-export const PRICING = [
-  {
-    name: 'Essential',
-    price: 180,
-    unit: 'per piece',
-    blurb: 'A single design, cleanly modelled and ready to cast.',
-    features: ['One piece, one metal', 'One studio render', 'STL + 3DM delivery', '2 revision rounds', '5 working days'],
-    featured: false,
-  },
-  {
-    name: 'Studio',
-    price: 390,
-    unit: 'per piece',
-    blurb: 'The package most brands order — variants, renders and full formats.',
-    features: ['Up to 3 design variants', '4 renders + 360° turntable', 'All formats incl. STEP', 'Stone schedule & weight estimate', '3 revision rounds', '3 working days'],
-    featured: true,
-  },
-  {
-    name: 'Production',
-    price: 740,
-    unit: 'per piece',
-    blurb: 'Collection work with your casting house looped in.',
-    features: ['Everything in Studio', 'Technical drawings & tolerances', 'Direct liaison with your caster', 'Sprue & tree layout', 'Unlimited minor revisions', '48 h priority queue'],
-    featured: false,
-  },
-];
-
 export const FAQ = [
   { q: 'What exactly do I receive at the end?', a: 'A folder containing the print-ready STL, the editable 3DM source model, STEP solids for CNC, an OBJ for rendering, plus a stone schedule, a weight estimate in your chosen metal and a one-page printable spec sheet.' },
   { q: 'Can you work from a photograph or a hand sketch?', a: 'Yes — that is most of our work. A clear photograph with a reference for scale (a coin, a ruler, or the finger size) is usually enough. For heirloom reproduction we ask for three angles.' },
-  { q: 'Will the file actually cast without rework?', a: 'That is the whole job. Every model is checked for watertight geometry, a minimum 0.8 mm wall thickness, prong seats, girdle clearance and shrinkage compensation. If your caster has a written spec, we model to theirs instead of ours.' },
+  { q: 'Will the file actually cast without rework?', a: 'That is the whole job. Every model is checked for watertight geometry, a minimum 0.6 mm wall thickness, prong seats, girdle clearance and shrinkage compensation. If your caster has a written spec, we model to theirs instead of ours.' },
   { q: 'How many revisions are included?', a: 'Two rounds on Essential and Studio, unlimited minor revisions on Production. A "round" means one consolidated list of changes, not one change at a time.' },
   { q: 'Who owns the finished model?', a: 'You do — outright, including the editable source file and full commercial rights. There are no licence fees and no royalty per cast. We only show a piece in our portfolio if you agree in writing.' },
   { q: 'Do you sign an NDA?', a: 'Always, and before you send anything. A mutual NDA is issued as part of the first reply to every enquiry.' },
-  { q: 'How fast can you turn a piece around?', a: 'Standard is five to six working days from a confirmed brief. Priority is three days, and a rush slot delivers in 48 hours where the queue allows.' },
+  { q: 'How fast can you turn a piece around?', a: 'Standard is five to six working days from a confirmed brief. A rush slot delivers in 48 hours where the queue allows.' },
   { q: 'Do you cast and manufacture as well?', a: 'No, and that is deliberate. We are a modelling studio, so we stay neutral and work with whichever casting house or 3D print bureau you already trust.' },
 ];
-
-export const ESTIMATOR = {
-  types: [
-    { id: 'ring', label: 'Ring', base: 180, days: 5 },
-    { id: 'pendant', label: 'Pendant / charm', base: 160, days: 4 },
-    { id: 'earrings', label: 'Earrings (pair)', base: 215, days: 5 },
-    { id: 'bracelet', label: 'Bracelet / bangle', base: 265, days: 6 },
-    { id: 'set', label: 'Matching set', base: 430, days: 9 },
-  ],
-  complexity: [
-    { id: 'clean', label: 'Clean & geometric', mult: 1, addDays: 0 },
-    { id: 'detailed', label: 'Detailed / filigree', mult: 1.45, addDays: 2 },
-    { id: 'sculpted', label: 'Sculpted / organic', mult: 2.0, addDays: 4 },
-  ],
-  turnaround: [
-    { id: 'standard', label: 'Standard', mult: 1, dayMult: 1 },
-    { id: 'priority', label: 'Priority', mult: 1.35, dayMult: 0.6 },
-    { id: 'rush', label: 'Rush (48 h)', mult: 1.85, dayMult: 0.35 },
-  ],
-  stone: { price: 1.8, days: 0.02, max: 200 },
-  currency: 'USD',
-  symbol: '$',
-};
-
-/** Runs the estimator. Returns rounded price band and working days. */
-export function estimate({ type, complexity, stones, turnaround }) {
-  const t = ESTIMATOR.types.find((x) => x.id === type) || ESTIMATOR.types[0];
-  const c = ESTIMATOR.complexity.find((x) => x.id === complexity) || ESTIMATOR.complexity[0];
-  const r = ESTIMATOR.turnaround.find((x) => x.id === turnaround) || ESTIMATOR.turnaround[0];
-  const n = Math.max(0, Math.min(ESTIMATOR.stone.max, Number(stones) || 0));
-
-  const price = (t.base * c.mult + n * ESTIMATOR.stone.price) * r.mult;
-  const days = Math.max(2, Math.round((t.days + c.addDays + n * ESTIMATOR.stone.days) * r.dayMult));
-  const round = (v) => Math.round(v / 10) * 10;
-
-  return {
-    low: round(price * 0.9),
-    high: round(price * 1.15),
-    days,
-    label: `${t.label} · ${c.label.toLowerCase()} · ${n} stone${n === 1 ? '' : 's'} · ${r.label.toLowerCase()}`,
-  };
-}
 
 export const NAV = [
   { href: '#work', label: 'Work' },

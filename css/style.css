@@ -890,6 +890,144 @@ blockquote {
   border-top: 1px solid var(--line-soft);
 }
 
+/* ── about 3D modeling ─────────────────────────────────────────────────── */
+
+.document-head {
+  max-width: 980px;
+}
+.document-head .section-lede {
+  max-width: 82ch;
+}
+.document-title {
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 3vw, 2.55rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.about-modeling-intro {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+.about-modeling-intro .section-head {
+  margin-bottom: 0;
+}
+.about-modeling-copy {
+  display: grid;
+  gap: 1.25rem;
+  color: var(--text-2);
+  font-size: clamp(1rem, 1.35vw, 1.1rem);
+  line-height: 1.85;
+}
+.document-list {
+  display: grid;
+  gap: 0.75rem;
+  color: var(--text-2);
+}
+.document-list li {
+  position: relative;
+  padding-left: 1.35rem;
+  line-height: 1.75;
+}
+.document-list li::before {
+  content: '';
+  position: absolute;
+  top: 0.8em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  transform: rotate(45deg);
+  background: var(--gold);
+}
+.about-benefits-head {
+  margin-bottom: 2rem;
+}
+.about-benefits .why-card {
+  background: var(--surface);
+}
+.about-benefits {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.document-list--why {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  background: var(--line-soft);
+}
+.document-list--why li {
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--bg);
+}
+.document-list--why li::before {
+  display: none;
+}
+.conclusion-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(1.5rem, 5vw, 4.5rem);
+  border: 1px solid var(--line);
+  background: radial-gradient(ellipse at top left, rgba(212, 175, 55, 0.07), transparent 65%), var(--bg-alt);
+}
+.conclusion-heading h2 {
+  margin-top: 1.75rem;
+  color: var(--gold-lit);
+  font-family: var(--serif);
+  font-size: clamp(2.25rem, 3.6vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+.conclusion-ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  height: 12px;
+}
+.conclusion-ornament::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--gold);
+  transform: rotate(45deg);
+}
+.conclusion-ornament::after {
+  content: '';
+  width: 64px;
+  height: 1px;
+  background: var(--line);
+}
+.conclusion-copy {
+  padding-left: clamp(1.5rem, 3vw, 3rem);
+  border-left: 1px solid var(--line);
+}
+.conclusion-copy p {
+  color: var(--text-2);
+  font-size: 1rem;
+  line-height: 1.85;
+}
+.conclusion-copy p + p {
+  margin-top: 1.25rem;
+}
+.conclusion-copy .conclusion-lead {
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  line-height: 1.5;
+}
+@media (max-width: 860px) {
+  .conclusion-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conclusion-copy {
+    padding-left: 0;
+    padding-top: 1.75rem;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+
 /* ── process ───────────────────────────────────────────────────────────── */
 
 .steps {
@@ -1823,6 +1961,7 @@ textarea.field-input {
     grid-template-columns: 1fr;
   }
   .materials-inner,
+  .about-modeling-intro,
   .faq-inner,
   .contact-inner,
   .hero-inner {
@@ -1873,6 +2012,9 @@ textarea.field-input {
   .cap-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
+  }
+  .document-list--why {
+    grid-template-columns: 1fr;
   }
 }
 

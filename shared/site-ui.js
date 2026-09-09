@@ -136,23 +136,6 @@ function renderTestimonials() {
     </div>`).join(''));
 }
 
-function renderPricing() {
-  paint('pricing', D.PRICING.map((p, i) => `
-    <article class="price-card${p.featured ? ' price-card--featured' : ''}" data-reveal style="--d:${i * 70}ms">
-      ${p.featured ? `<span class="price-flag">${esc(ui('mostOrdered', 'Most ordered'))}</span>` : ''}
-      <h3 class="price-name">${esc(p.name)}</h3>
-      <p class="price-blurb">${esc(p.blurb)}</p>
-      <div class="price-value"><span class="price-from">${esc(ui('from', 'from'))}</span>
-        <span class="price-num">${D.ESTIMATOR.symbol}${p.price}</span>
-        <span class="price-unit">${esc(p.unit)}</span>
-      </div>
-      <ul class="price-list">
-        ${p.features.map((f) => `<li>${icon('check')}<span>${esc(f)}</span></li>`).join('')}
-      </ul>
-      <a class="btn ${p.featured ? 'btn--primary' : 'btn--ghost'} price-cta" href="#contact">${esc(ui('startWith', 'Start with'))} ${esc(p.name)}</a>
-    </article>`).join(''));
-}
-
 function renderFaq() {
   paint('faq', D.FAQ.map((f, i) => `
     <div class="faq-item" data-reveal style="--d:${i * 35}ms">
@@ -165,41 +148,6 @@ function renderFaq() {
         <p>${esc(f.a)}</p>
       </div>
     </div>`).join(''));
-}
-
-function renderEstimator() {
-  const opts = (arr) => arr.map((o) => `<option value="${esc(o.id)}">${esc(o.label)}</option>`).join('');
-  paint('estimator', `
-    <div class="est-controls">
-      <label class="field">
-        <span class="field-label">${esc(ui('estimatorWhat', 'What are we modelling?'))}</span>
-        <select class="field-input" id="est-type">${opts(D.ESTIMATOR.types)}</select>
-      </label>
-      <label class="field">
-        <span class="field-label">${esc(ui('estimatorDetail', 'Level of detail'))}</span>
-        <select class="field-input" id="est-complexity">${opts(D.ESTIMATOR.complexity)}</select>
-      </label>
-      <label class="field">
-        <span class="field-label">${esc(ui('estimatorTurnaround', 'Turnaround'))}</span>
-        <select class="field-input" id="est-turnaround">${opts(D.ESTIMATOR.turnaround)}</select>
-      </label>
-      <label class="field field--range">
-        <span class="field-label">${esc(ui('estimatorStones', 'Stones to set'))} <output id="est-stones-out">0</output></span>
-        <input class="field-range" type="range" id="est-stones" min="0" max="${D.ESTIMATOR.stone.max}" step="1" value="0">
-      </label>
-    </div>
-    <div class="est-result" aria-live="polite">
-      <div class="est-row">
-        <span class="est-key">${esc(ui('estimatedRange', 'Estimated range'))}</span>
-        <span class="est-val" id="est-price">—</span>
-      </div>
-      <div class="est-row">
-        <span class="est-key">${esc(ui('workingDays', 'Working days'))}</span>
-        <span class="est-val" id="est-days">—</span>
-      </div>
-      <p class="est-note">${esc(ui('estimatorNote', 'Indicative only — a written quote follows your brief. Complex pavé fields and articulated pieces are priced individually.'))}</p>
-      <button type="button" class="btn btn--primary est-send" id="est-send">${icon('arrow-right')}<span>${esc(ui('estimatorSend', 'Send this brief to the studio'))}</span></button>
-    </div>`);
 }
 
 function renderFooterMeta() {
@@ -523,63 +471,6 @@ function initFaq() {
   });
 }
 
-function initEstimator() {
-  const type = $('#est-type');
-  if (!type) return;
-  const complexity = $('#est-complexity');
-  const turnaround = $('#est-turnaround');
-  const stones = $('#est-stones');
-  const stonesOut = $('#est-stones-out');
-  const priceEl = $('#est-price');
-  const daysEl = $('#est-days');
-  const send = $('#est-send');
-  let last = null;
-
-  const update = () => {
-    stonesOut.textContent = stones.value;
-    last = D.estimate({
-      type: type.value,
-      complexity: complexity.value,
-      stones: stones.value,
-      turnaround: turnaround.value,
-    });
-    priceEl.textContent = `${D.ESTIMATOR.symbol}${last.low.toLocaleString()} – ${D.ESTIMATOR.symbol}${last.high.toLocaleString()}`;
-    if (D.UI) {
-      const mod10 = last.days % 10;
-      const mod100 = last.days % 100;
-      const dayWord = mod10 === 1 && mod100 !== 11
-        ? ui('dayOne', 'working day')
-        : mod10 >= 2 && mod10 <= 4 && !(mod100 >= 12 && mod100 <= 14)
-          ? ui('daysFew', 'working days')
-          : ui('daysMany', 'working days');
-      daysEl.textContent = `${last.days} ${dayWord}`;
-    } else {
-      daysEl.textContent = `${last.days} working day${last.days === 1 ? '' : 's'}`;
-    }
-  };
-
-  [type, complexity, turnaround].forEach((el) => el.addEventListener('change', update));
-  stones.addEventListener('input', update);
-  update();
-
-  send?.addEventListener('click', () => {
-    const message = $('#f-message');
-    const contact = document.querySelector('#contact');
-    if (message && last) {
-      message.value =
-        `${ui('estimatorBrief', 'Estimator brief')}: ${last.label}.\n` +
-        `${ui('indicativeRange', 'Indicative range')} ${D.ESTIMATOR.symbol}${last.low}–${D.ESTIMATOR.symbol}${last.high}, ` +
-        `${ui('aboutDays', 'about')} ${last.days} ${ui('daysMany', 'working days')}.\n\n${ui('projectDetails', 'Project details')}: `;
-      message.dispatchEvent(new Event('input'));
-    }
-    if (contact) {
-      if (lenis) lenis.scrollTo(contact, { offset: -80 });
-      else contact.scrollIntoView({ behavior: 'smooth' });
-      setTimeout(() => $('#f-name')?.focus(), 600);
-    }
-  });
-}
-
 function initForm() {
   const form = $('#contact-form');
   if (!form) return;
@@ -813,9 +704,7 @@ export function mountSite(options = {}) {
   renderCapabilities();
   renderWhy();
   renderTestimonials();
-  renderPricing();
   renderFaq();
-  renderEstimator();
   renderFooterMeta();
 
   window.lucide?.createIcons();
@@ -826,7 +715,6 @@ export function mountSite(options = {}) {
   initCounters(env);
   initPortfolio(config);
   initFaq();
-  initEstimator();
   initForm();
   initTestimonials(config);
   initTilt(config);
